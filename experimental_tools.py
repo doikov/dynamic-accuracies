@@ -8,7 +8,6 @@ from utils import get_tolerance_strategy
 # Uncomment to incorporate a font into the graphs:
 # mpl.rcParams['pdf.fonttype'] = 42
 
-
 def generate_logsumexp(n, mu):
     np.random.seed(31415)
     m = 6 * n
@@ -21,7 +20,6 @@ def generate_logsumexp(n, mu):
     Binv = np.linalg.inv(B)
     return oracle, x_star, f_star, B, Binv
 
-
 def get_constant_strategies():
     deltas = [1e-2, 1e-4, 1e-6, 1e-8]
     labels = [r'$10^{-2}$', r'$10^{-4}$', r'$10^{-6}$', r'$10^{-8}$']
@@ -32,7 +30,6 @@ def get_constant_strategies():
                                            'label': labels[i]})
         strategies.append(strategy)
     return strategies
-
 
 def get_beta_strategies():
     betas = [0.5, 0.1, 0.01, 0.001]
@@ -46,7 +43,6 @@ def get_beta_strategies():
         strategies.append(strategy)
     return strategies
 
-
 def get_power_strategies():
     powers = [1, 2, 3, 4]
     labels = [r'$1/k$', r'$1/k^2$', r'$1/k^3$', r'$1/k^4$']
@@ -59,10 +55,8 @@ def get_power_strategies():
         strategies.append(strategy)
     return strategies
 
-
 def get_labels(strategies):
     return [s.label for s in strategies]
-
 
 def run_method(method, parameters, labels):
     print('Run:', flush=True)
@@ -76,7 +70,6 @@ def run_method(method, parameters, labels):
         histories.append(history)
     print()
     return histories
-
 
 def plot_func_residual(results, xparam, f_star, labels, colors, linestyles, 
                        linewidths, alphas, title, xlabel, filename=None, 
@@ -109,7 +102,6 @@ def plot_func_residual(results, xparam, f_star, labels, colors, linestyles,
 
     if filename is not None:
         plt.savefig(filename)
-
 
 def plot_func_residual_iter(results, xparam, f_star, labels, colors, linestyles, 
                             linewidths, alphas, title, xlabel, filename=None,
@@ -154,4 +146,3 @@ def plot_func_residual_iter(results, xparam, f_star, labels, colors, linestyles,
     
     if filename is not None:
         plt.savefig(filename)
-
