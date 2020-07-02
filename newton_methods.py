@@ -9,15 +9,16 @@ from oracles import ContractingOracle, OracleCallsCounter
 from utils import get_tolerance, get_tolerance_strategy, norms_init
 
 
-def cubic_newton_step_fgm(matvec, grad_k, H_k, x_0, tolerance, 
+def cubic_newton_step_fgm(matvec, g, H, x_0, tolerance, 
                           max_iters=1000, trace=True,
                           B=None, Binv=None):
     """
     Run Fast Gradient Method with restarts to solve the cubic subproblem:
         f(x) = <g, x> + 1/2 * <Ax, x> + H/3 * ||x||^3.
+    matvec function computes Ax product.
     """
-    if H_k < 1e-9:
-        # Warning: H_k is small.
+    if H < 1e-9:
+        # Warning: H is small.
         print('W-H', flush=True, end=' ')
 
     l2_norm_sqr, dual_norm_sqr, to_dual, precond = norms_init(B, Binv)
@@ -27,13 +28,13 @@ def cubic_newton_step_fgm(matvec, grad_k, H_k, x_0, tolerance,
     v_k = np.copy(x_0)
     mat_x_k = matvec(x_k)
     x_k_norm = l2_norm_sqr(x_k) ** 0.5
-    g_cur = mat_x_k + grad_k
-    G_cur = g_cur + H_k * x_k_norm * to_dual(x_k)
+    g_cur = mat_x_k + g
+    G_cur = g_cur + H * x_k_norm * to_dual(x_k)
     G_0_norm_sqr = dual_norm_sqr(G_cur)
 
-    f_cur = 0.5 * mat_x_k.dot(x_k) + grad_k.dot(x_k)
+    f_cur = 0.5 * mat_x_k.dot(x_k) + g.dot(x_k)
     # Outer loop objective value.
-    F_cur = f_cur + H_k * x_k_norm ** 3.0 / 3.0
+    F_cur = f_cur + H * x_k_norm ** 3.0 / 3.0
 
     x_star = np.copy(x_0)
     F_star = F_cur
@@ -74,17 +75,17 @@ def cubic_newton_step_fgm(matvec, grad_k, H_k, x_0, tolerance,
                 y_k_norm = l2_norm_sqr(y_k) ** 0.5
 
                 mat_y_k = matvec(y_k)
-                g_y_k = mat_y_k + grad_k
-                f_y_k = 0.5 * mat_y_k.dot(y_k) + grad_k.dot(y_k)
+                g_y_k = mat_y_k + g
+                f_y_k = 0.5 * mat_y_k.dot(y_k) + g.dot(y_k)
                         
                 # Compute proximal gradient step (prox-function is cubed norm).
                 v = y_k - precond(g_y_k) / L_k
                 v_norm = l2_norm_sqr(v) ** 0.5
-                T = 2 * v / (1 + np.sqrt(1 + 4 * H_k / L_k * v_norm))
+                T = 2 * v / (1 + np.sqrt(1 + 4 * H / L_k * v_norm))
 
                 T_norm = l2_norm_sqr(T) ** 0.5
                 mat_T = matvec(T)
-                f_T = 0.5 * mat_T.dot(T) + grad_k.dot(T)
+                f_T = 0.5 * mat_T.dot(T) + g.dot(T)
                       
                 if not inner_line_search:
                     break
@@ -99,9 +100,9 @@ def cubic_newton_step_fgm(matvec, grad_k, H_k, x_0, tolerance,
             if inner_line_search:
                 L_k *= 0.5
 
-            F_T = f_T + H_k * T_norm ** 3 / 3.0
-            g_T = mat_T + grad_k
-            G_T = g_T + H_k * T_norm * to_dual(T)
+            F_T = f_T + H * T_norm ** 3 / 3.0
+            g_T = mat_T + g
+            G_T = g_T + H * T_norm * to_dual(T)
             G_T_norm_sqr = dual_norm_sqr(G_T)
 
             v_k = T + (A_k / a_k) * (T - x_k)
@@ -146,7 +147,7 @@ def cubic_newton_step_ncg(matvec, g, H, alpha, c, x_0, tolerance,
     """
     Nonlinear Conjugate Gradients for minimizing the function:
         f(x) = <g, x> + 1/2 * <Ax, x> + H/3 * ||x||^3 + alpha/3 * ||x - c||^3
-    matvec function computes Ah product.
+    matvec function computes Ax product.
     """
     l2_norm_sqr, dual_norm_sqr, to_dual, precond = norms_init(B, Binv)
     history = defaultdict(list) if trace else None
@@ -174,7 +175,7 @@ def cubic_newton_step_ncg(matvec, g, H, alpha, c, x_0, tolerance,
     for k in range(max_iters):
         
         if k % n == 0:
-            # restart every n iterations.
+            # Restart every n iterations.
             p_k = G_k
     
         # Exact line search, minimizing g(h) = f(x_k - h p_k).
@@ -664,4 +665,3 @@ def contracting_cubic_newton(oracle, x_0, tolerance, max_iters=1000, H_0=1.0,
         grad_k_norm_sqr = dual_norm_sqr(grad_k)
 
     return x_k, message, history
-

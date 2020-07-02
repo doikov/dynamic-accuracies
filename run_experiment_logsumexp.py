@@ -69,4 +69,3 @@ def run_experiment(n, mu, max_iters):
 run_experiment(n=100, mu=0.25, max_iters=2000)
 run_experiment(n=100, mu=0.1, max_iters=2000)
 run_experiment(n=100, mu=0.05, max_iters=10000)
-

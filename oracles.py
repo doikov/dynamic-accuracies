@@ -309,4 +309,3 @@ class PDifferenceOracle(BaseSmoothOracle):
         np.fill_diagonal(H[1:], shift_diag)
         np.fill_diagonal(H[:,1:], shift_diag)
         return H
-

@@ -114,4 +114,3 @@ run_experiment(n=200, line_search=False, max_iters=400)
 run_experiment(n=50, line_search=True, max_iters=400)
 run_experiment(n=100, line_search=True, max_iters=400)
 run_experiment(n=200, line_search=True, max_iters=400)
-

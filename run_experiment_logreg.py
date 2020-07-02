@@ -74,7 +74,6 @@ def run_experiment(dataset_filename, name, max_iters):
                        filename=filename+'_powers.pdf')
 
 
-
 run_experiment('data/mushrooms.txt', 'mushrooms', max_iters=500)
 run_experiment('data/w8a.txt', 'w8a', max_iters=200)
 run_experiment('data/a8a.txt', 'a8a', max_iters=200)

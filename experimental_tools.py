@@ -5,7 +5,7 @@ from datetime import datetime
 from oracles import create_log_sum_exp_zero_oracle
 from utils import get_tolerance_strategy
 
-# Uncomment to incorporate a font into graphs:
+# Uncomment to incorporate a font into the graphs:
 # mpl.rcParams['pdf.fonttype'] = 42
 
 
