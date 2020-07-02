@@ -4,7 +4,6 @@ import scipy
 from scipy.special import expit
 from scipy.special import logsumexp, softmax
 
-
 class BaseSmoothOracle(object):
     """
     Base class for implementation of oracles.
@@ -40,7 +39,6 @@ class BaseSmoothOracle(object):
         """
         raise NotImplementedError('Third derivative oracle is not implemented.')
 
-
 class OracleCallsCounter(BaseSmoothOracle):
     """
     Wrapper to count oracle calls.
@@ -73,7 +71,6 @@ class OracleCallsCounter(BaseSmoothOracle):
         self.third_vec_vec_calls += 1
         return self.oracle.third_vec_vec(x, v)
 
-
 class ContractingOracle(BaseSmoothOracle):
     """
     Contracted objective:
@@ -99,7 +96,6 @@ class ContractingOracle(BaseSmoothOracle):
     def hess_vec(self, x, v):
         return self.a ** 2 / (self.a + self.A) * \
             self.oracle.hess_vec(self.tau * x + self.bias, v)
-
 
 class LogSumExpOracle(BaseSmoothOracle):
     """
@@ -168,7 +164,6 @@ class LogSumExpOracle(BaseSmoothOracle):
                 self.matvec_ATx(self.pi * self.Av) - \
                 self.AT_pi_v * self.AT_pi)
 
-
 def create_log_sum_exp_oracle(A, b, mu):
     """
     Auxiliary function for creating log-sum-exp oracle.
@@ -184,7 +179,6 @@ def create_log_sum_exp_oracle(A, b, mu):
         return B.T.dot(B * s.reshape(-1, 1))
 
     return LogSumExpOracle(matvec_Ax, matvec_ATx, matmat_ATsA, b, mu)
-
 
 def create_log_sum_exp_zero_oracle(A, b, mu):
     """
@@ -206,7 +200,6 @@ def create_log_sum_exp_zero_oracle(A, b, mu):
         return B.T.dot(B * s.reshape(-1, 1))
 
     return LogSumExpOracle(matvec_Ax, matvec_ATx, matmat_ATsA, b, mu)
-
 
 class LogRegL2Oracle(BaseSmoothOracle):
     """
@@ -258,7 +251,6 @@ class LogRegL2Oracle(BaseSmoothOracle):
             self.last_x = np.copy(x)
             self.Abx = -self.b * self.matvec_Ax(x)
 
-
 def create_log_reg_oracle(A, b, regcoef):
     """
     Creates logistic regression oracle.
@@ -274,7 +266,6 @@ def create_log_reg_oracle(A, b, regcoef):
         return B.T.dot(B * s.reshape(-1, 1))
 
     return LogRegL2Oracle(matvec_Ax, matvec_ATx, matmat_ATsA, b, regcoef)
-
 
 class PDifferenceOracle(BaseSmoothOracle):
     """

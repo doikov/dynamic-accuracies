@@ -7,7 +7,6 @@ from oracles import create_log_reg_oracle
 from sklearn.datasets import load_svmlight_file
 from utils import get_tolerance, get_tolerance_strategy
 
-
 def run_experiment(dataset_filename, name, max_iters):    
     print('Experiment: \t %s, \t file: %s, \t max_iters = %d.' % 
           (name, dataset_filename, max_iters))
@@ -72,7 +71,6 @@ def run_experiment(dataset_filename, name, max_iters):
                        'Log-reg: %s' % name,
                        'Time, s', 
                        filename=filename+'_powers.pdf')
-
 
 run_experiment('data/mushrooms.txt', 'mushrooms', max_iters=500)
 run_experiment('data/w8a.txt', 'w8a', max_iters=200)

@@ -4,7 +4,6 @@ from experimental_tools import *
 from newton_methods import cubic_newton
 from utils import get_tolerance, get_tolerance_strategy
 
-
 def run_experiment(n, mu, max_iters):    
     print('Experiment: \t n = %d, \t mu = %g, \t max_iters = %d.' % 
           (n, mu, max_iters))
@@ -64,7 +63,6 @@ def run_experiment(n, mu, max_iters):
                        r'Log-sum-exp, $\mu = %g$' % mu, 
                        'Time, s', 
                        filename=filename+'_powers.pdf')
-
 
 run_experiment(n=100, mu=0.25, max_iters=2000)
 run_experiment(n=100, mu=0.1, max_iters=2000)

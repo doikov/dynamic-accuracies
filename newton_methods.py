@@ -8,10 +8,8 @@ from datetime import datetime
 from oracles import ContractingOracle, OracleCallsCounter
 from utils import get_tolerance, get_tolerance_strategy, norms_init
 
-
-def cubic_newton_step_fgm(matvec, g, H, x_0, tolerance, 
-                          max_iters=1000, trace=True,
-                          B=None, Binv=None):
+def cubic_newton_step_fgm(matvec, g, H, x_0, tolerance, max_iters=1000, 
+                          trace=True, B=None, Binv=None):
     """
     Run Fast Gradient Method with restarts to solve the cubic subproblem:
         f(x) = <g, x> + 1/2 * <Ax, x> + H/3 * ||x||^3.
@@ -139,11 +137,9 @@ def cubic_newton_step_fgm(matvec, g, H, x_0, tolerance,
 
     return x_star, F_star, "iterations_exceeded", history
 
-
 def cubic_newton_step_ncg(matvec, g, H, alpha, c, x_0, tolerance, 
-                          max_iters=1000, trace=True,
-                          name='Dai-Yuan',
-                          B=None, Binv=None):
+                          max_iters=1000, trace=True, name='Dai-Yuan', B=None, 
+                          Binv=None):
     """
     Nonlinear Conjugate Gradients for minimizing the function:
         f(x) = <g, x> + 1/2 * <Ax, x> + H/3 * ||x||^3 + alpha/3 * ||x - c||^3
@@ -251,7 +247,6 @@ def cubic_newton_step_ncg(matvec, g, H, alpha, c, x_0, tolerance,
 
     return x_k, f_k, "iterations_exceeded", history
 
-
 def cubic_newton_step(g, A, H, B=None, eps=1e-9):
     """
     Computes minimizer of the following function:
@@ -308,13 +303,11 @@ def cubic_newton_step(g, A, H, B=None, eps=1e-9):
 
     return np.zeros(n), 0.0, "iterations_exceeded"
 
-
 def compute_cubic_step(y_k, H_k, oracle, inner_tolerance, subsolver='FGM', 
                        B=None, Binv=None):
     """
     Computes the step of Cubic Newton, using one of the subsolvers.
     """
-
     grad_y_k = oracle.grad(y_k)
     d_k = np.zeros_like(y_k)
     if subsolver == 'exact':
@@ -345,15 +338,14 @@ def compute_cubic_step(y_k, H_k, oracle, inner_tolerance, subsolver='FGM',
         print('W: %s' % message, end=' ', flush=True)
     return y_k + T_d_k, model_T, message
 
-
 def cubic_newton(oracle, x_0, tolerance, max_iters=1000, H_0=1.0, 
-                 line_search=False, trace=True,
-                 inner_tolerance_strategy=None,
-                 subsolver='FGM',
-                 B=None, Binv=None,
+                 line_search=False, trace=True, inner_tolerance_strategy=None,
+                 subsolver='FGM', B=None, Binv=None,
                  stopping_criterion_subproblem='grad_uniform_convex',
                  averaging=False):
-    
+    """
+    Newton method with cubic regularization.
+    """
     oracle = OracleCallsCounter(oracle)
 
     # Initialization.
@@ -365,7 +357,6 @@ def cubic_newton(oracle, x_0, tolerance, max_iters=1000, H_0=1.0,
         inner_tolerance_strategy = get_tolerance_strategy(
             {'strategy': 'constant',
              'delta': tolerance.tolerance ** 1.5})
-
 
     x_k = np.copy(x_0)
     func_k = oracle.func(x_k)
@@ -526,12 +517,11 @@ def cubic_newton(oracle, x_0, tolerance, max_iters=1000, H_0=1.0,
 
     return x_k, message, history
 
-
 def contracting_cubic_newton(oracle, x_0, tolerance, max_iters=1000, H_0=1.0, 
                              trace=True, prox_steps_max_iters=None,
                              prox_steps_tolerance_strategy=None,
-                             newton_steps_tolerance_strategy=None,
-                             B=None, Binv=None):
+                             newton_steps_tolerance_strategy=None, B=None, 
+                             Binv=None):
     """
     Accelerated Cubic Newton, using contracted proximal iterations.
     """

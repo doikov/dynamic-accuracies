@@ -5,7 +5,6 @@ from newton_methods import cubic_newton, contracting_cubic_newton
 from oracles import PDifferenceOracle
 from utils import get_tolerance, get_tolerance_strategy
 
-
 def run_experiment(n, line_search, max_iters):    
     print('Experiment: \t n = %d, \t line_search = %s, \t max_iters = %d.' % 
           (n, str(line_search), max_iters))
@@ -32,7 +31,7 @@ def run_experiment(n, line_search, max_iters):
                                                 'c': 1.0,
                                                 'alpha': 1,
                                                 'label': 'adaptive'})
-
+    
     subsolver = 'NCG'
     stopping_criterion_inner = 'grad_uniform_convex'
 
@@ -89,7 +88,6 @@ def run_experiment(n, line_search, max_iters):
         histories.append(history_CN_contracting)
         labels.append(r'Contracting')
 
-
     filename = os.getcwd() + '/plots/averaging_%d' % n
     title = r'$n = %d$' % n
     if line_search:
@@ -105,7 +103,6 @@ def run_experiment(n, line_search, max_iters):
                        'Iterations', 
                        filename=filename+'.pdf',
                        figsize=(5.5, 5))
-
 
 run_experiment(n=50, line_search=False, max_iters=400)
 run_experiment(n=100, line_search=False, max_iters=400)
