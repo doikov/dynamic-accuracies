@@ -8,7 +8,7 @@ use the following commands.
 The results will be placed into folder "plots/*", it needs to be created 
 in advance.
 
-### Figure 1:
+#### Figure 1:
 $ python3 run_experiment_logreg.py
 (It is required to download the files 
     "data/mushrooms.txt", 
@@ -16,13 +16,13 @@ $ python3 run_experiment_logreg.py
     "data/a8a.txt"
 from https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/ in advance).
 
-### Figure 2:
+#### Figure 2:
 $ python3 run_experiment_logsumexp.py
 
-### Figures 3, 4:
+#### Figures 3, 4:
 $ python3 run_experiment_logsumexp_exact.py
 
-### Figure 5:
+#### Figure 5:
 $ python3 run_experiment_logreg_exact.py
 (It is required to download the files 
     "data/mushrooms.txt", 
@@ -32,7 +32,7 @@ $ python3 run_experiment_logreg_exact.py
     "data/splice.txt"
 from https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/ in advance).
 
-### Figure 6:
+#### Figure 6:
 $ python3 run_experiment_averaging.py
 
 
