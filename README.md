@@ -5,12 +5,11 @@ To plot the graphs from the paper
 (https://arxiv.org/abs/2002.09403) 
 use the following commands.
 
-The results will be placed into folder "plots/*", it needs to be created 
-in advance.
+The results will be placed into folder "plots/*".
 
 #### Figure 1:
 $ python3 run_experiment_logreg.py
-(It is required to download the files 
+(It requires to download the files 
     "data/mushrooms.txt", 
     "data/w8a.txt", 
     "data/a8a.txt"
@@ -24,7 +23,7 @@ $ python3 run_experiment_logsumexp_exact.py
 
 #### Figure 5:
 $ python3 run_experiment_logreg_exact.py
-(It is required to download the files 
+(It requires to download the files 
     "data/mushrooms.txt", 
     "data/w8a.txt", 
     "data/a8a.txt",
